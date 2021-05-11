@@ -36,9 +36,11 @@ class P4InfoHelper(object):
             pre = o.preamble
             if name:
                 if (pre.name == name or pre.alias == name):
+                    # print(f'I want {entity_type}, {name}, {id}\n\tand I get:\n{o}')
                     return o
             else:
                 if pre.id == id:
+                    # print(f'I want {entity_type}, {name}, {id}\n\tand I get:\n{o}')
                     return o
 
         if name:
