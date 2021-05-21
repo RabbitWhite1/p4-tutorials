@@ -48,6 +48,7 @@ def num_parser(s, i, ts):
 def op_parser(s, i, ts):
     pattern = "^\s*([-+&|^])\s*"
     match = re.match(pattern,s[i:])
+    print(s, i, ts)
     if match:
         ts.append(Token('num', match.group(1)))
         return i + match.end(), ts
@@ -68,19 +69,20 @@ def main():
     iface = 'eth0'
 
     while True:
-        s = str(eval(input('> ')))
+        s = str(input('> '))
         if s == "quit":
             break
         print(s)
         try:
             i,ts = p(s,0,[])
+            print(f'ts is: {[t.value for t in ts]}')
             pkt = Ether(dst='00:04:00:00:00:00', type=0x1234) / P4calc(op=ts[1].value,
                                               operand_a=int(ts[0].value),
                                               operand_b=int(ts[2].value))
             pkt = pkt/' '
-
-#            pkt.show()
+            pkt.show()
             resp = srp1(pkt, iface=iface, timeout=1, verbose=False)
+            resp.show()
             if resp:
                 p4calc=resp[P4calc]
                 if p4calc:
